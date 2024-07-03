@@ -1,7 +1,9 @@
 BasedOnStyle: Google
 IndentWidth: 4
 ColumnLimit: 120
-AlignAfterOpenBracket: BlockIndent
 AllowShortBlocksOnASingleLine: Empty
 AllowShortFunctionsOnASingleLine: Empty
 AllowShortLoopsOnASingleLine: false
+AlignAfterOpenBracket: AlwaysBreak
+BinPackArguments: false
+BinPackParameters: false

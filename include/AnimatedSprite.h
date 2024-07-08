@@ -8,7 +8,6 @@
 #include "raylib.h"
 
 class AnimatedSprite {
-   private:
     Texture2D texture{};
     Rectangle frameRec{};
     int frameCount = 0;

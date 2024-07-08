@@ -4,7 +4,12 @@
 #include <UI.h>
 
 #include "AnimatedSprite.h"
+#include "ScreenManager.h"
+#include "Title.h"
+#include "Team.h"
 #include "raygui.h"
+
+void initDisplays() {}
 
 int main() {
     // Tamaños de la pantalla real y la pantalla virtual
@@ -47,10 +52,19 @@ int main() {
         0.0f, 0.0f, static_cast<float>(target.texture.width), -static_cast<float>(target.texture.height)};
     Rectangle destRec = {-escala, -escala, screenWidth + (escala * 2), screenHeight + (escala * 2)};
 
-    // Algunos pokemons que pontar
-    const auto pkm = new AnimatedSprite("BULBASAUR");
-    const auto pkm2 = new AnimatedSprite("CHARMANDER");
-    const auto pkm3 = new AnimatedSprite("SQUIRTLE");
+    // ------ Screens ------
+    ScreenManager screenManager;
+
+    Title titleScreen;
+    titleScreen.SetScreenManager(&screenManager);
+    screenManager.AddScreen("title", &titleScreen);
+
+    Team teamScreen;
+    teamScreen.SetScreenManager(&screenManager);
+    screenManager.AddScreen("team", &teamScreen);
+
+    screenManager.ChangeScreen("title");
+    // ------ Screens ------
 
     while (!WindowShouldClose()) {
         if (IsWindowResized()) {
@@ -92,19 +106,17 @@ int main() {
         screenSpaceCamera.target.y -= worldSpaceCamera.target.y;
         screenSpaceCamera.target.y *= escala;
 
-        pkm->update();
-        pkm2->update();
-        pkm3->update();
-
         BeginTextureMode(target);  // Dibujar en el canvas
         ClearBackground(GetColor(GuiGetStyle(DEFAULT, BACKGROUND_COLOR)));
 
         BeginMode2D(worldSpaceCamera);  // Dibujar en la pantalla virtual
-        UI::DrawRectangleWithBorders(Rectangle{10, 10, 150, 60});
+        screenManager.Update();
+        screenManager.Draw();
 
-        pkm->draw(Vector2{40, 85}, 2);
-        pkm2->draw(Vector2{115, 80}, 2);
-        pkm3->draw(Vector2{200, 80}, 2);
+        DrawFPS(290, 10);
+
+        //
+
         EndMode2D();       // FIN Dibujar en la pantalla virtual
         EndTextureMode();  // FIN Dibujar en el canvas
 

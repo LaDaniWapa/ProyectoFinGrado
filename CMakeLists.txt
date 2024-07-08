@@ -8,7 +8,7 @@ project(${PROJECT_NAME})
 set(CMAKE_CXX_STANDARD 17)
 
 # Dependencies
-include_directories(include)
+include_directories(include src/Screens)
 include(FetchContent)
 
 function(add_git_dependency libName gitURL gitTag)
@@ -31,8 +31,6 @@ add_git_dependency(
         5.0
 )
 
-
-
 # Adding our source files
 # Define PROJECT_SOURCES as a list of all source files
 file(GLOB_RECURSE PROJECT_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_LIST_DIR}/sources/*.cpp")
@@ -42,8 +40,9 @@ set(PROJECT_INCLUDE "${CMAKE_CURRENT_LIST_DIR}/sources/")
 
 # Declaring our executable
 file(GLOB SRC "src/*.cpp")
-add_executable(${PROJECT_NAME} ${SRC}
-        include/AnimatedSprite.h)
+file(GLOB SCREENS "src/Screens/*.cpp")
+
+add_executable(${PROJECT_NAME} ${SRC} ${SCREENS})
 target_sources(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCES})
 target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_INCLUDE})
 
